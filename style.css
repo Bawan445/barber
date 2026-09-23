@@ -31,6 +31,7 @@ body {
     width: 100%;
 }
 
+/* شریتی سەرەوە */
 .top-bar {
     min-height: 75px;
     background-color: var(--card-bg);
@@ -38,31 +39,66 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 16px;
+    padding: 8px 18px;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
 }
 
-.bar-center {
+/* دەستەچەپ: بەشی کاتژمێر و بەروار */
+.bar-left {
+    display: flex;
+    align-items: center;
+}
+
+.time-widget {
+    background: #080f1e;
+    border: 1px solid var(--border-color);
+    padding: 6px 14px;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .live-time {
-    font-size: 22px;
+    font-size: 19px;
     font-weight: 900;
     color: var(--primary);
     letter-spacing: 1px;
 }
 
 .live-date {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-gray);
     font-weight: 600;
 }
 
-.bar-left, .bar-right {
+/* ناوەڕاست: ناوی سەرتاشخانە */
+.bar-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-title {
+    font-size: 24px;
+    font-weight: 900;
+    color: #f8fafc;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    background: linear-gradient(90deg, #38bdf8, #00d2ff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: 0.2s;
+}
+
+.shop-title:hover {
+    filter: brightness(1.2);
+}
+
+/* دەستەڕاست: دوگمەکان */
+.bar-right {
     display: flex;
     gap: 8px;
     align-items: center;
@@ -86,13 +122,14 @@ body {
     background: linear-gradient(135deg, #059669, #10b981);
     color: white;
     border: none;
-    padding: 10px 16px;
+    padding: 9px 15px;
     border-radius: 8px;
     font-size: 13px;
     font-weight: bold;
     cursor: pointer;
 }
 
+/* خشتەی کاتژمێرەکان */
 .schedule-container {
     flex: 1;
     overflow-y: auto;
@@ -105,7 +142,7 @@ body {
     gap: 12px;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 850px) {
     .schedule-table-grid {
         grid-template-columns: 1fr;
     }
@@ -315,7 +352,6 @@ body {
     cursor: pointer;
 }
 
-/* بەشی تایبەتی ئەرشیفی مانگەکان */
 .archive-section {
     background: #091326;
     border: 1px solid var(--border-color);
