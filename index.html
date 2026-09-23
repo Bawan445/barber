@@ -7,24 +7,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>نۆرەی سەرتاشخانە</title>
     <link rel="stylesheet" href="style.css">
-    <!-- بەستنەوەی مەنیفێست -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#080e1a">
-
-<!-- تاگە تایبەتەکانی Apple Safari بۆ iPad -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="سەرتاشخانە">
-<link rel="apple-touch-icon" href="https://cdn-icons-png.flxml.com/512/2933/2933921.png">
-
-<script>
-  // بەگەڕخستنی سیستەمی ئۆفلاین
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-      .then(() => console.log('ئۆفلاین ئامادەیە!'))
-      .catch((err) => console.log('هەڵە لە ئۆفلاین:', err));
-  }
-</script>
 </head>
 <body>
 
@@ -58,7 +40,7 @@
         </div>
     </div>
 
-    <!-- مۆدێلی داهات و خەرجی و ئەرشیفی مانگانە -->
+    <!-- مۆدێلی داهات و خەرجی و ئەرشیف -->
     <div id="finance-modal" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-header">
@@ -67,7 +49,6 @@
             </div>
             <div class="modal-body">
                 
-                <!-- کارتەکانی ئاماری نۆرەگرتن -->
                 <div class="booking-stats-row">
                     <div class="b-stat-box">
                         <span>📅 نۆرەکانی ئەمڕۆ</span>
@@ -79,7 +60,6 @@
                     </div>
                 </div>
 
-                <!-- ژمێریاری مانگی ئێستا -->
                 <div class="finance-summary">
                     <div class="fin-box inc">
                         <span>داهاتی ئەم مانگە</span>
@@ -95,7 +75,6 @@
                     </div>
                 </div>
 
-                <!-- تۆمارکردنی خەرجی و داهات -->
                 <div class="finance-inputs">
                     <input type="text" id="fin-note" placeholder="وردەکاری خەرجی یان داهات">
                     <input type="number" id="fin-amount" placeholder="بڕی پارە">
@@ -106,13 +85,10 @@
                     <button type="button" class="btn-save" onclick="addFinanceRecord()">زیادکردن</button>
                 </div>
 
-                <!-- بەشی ئەرشیفی مانگەکانی پێشوو -->
                 <div class="archive-section">
                     <div class="archive-header">
                         <h4>📁 بینینی ئەرشیفی مانگەکانی تر:</h4>
-                        <select id="archive-month-select" onchange="loadSelectedMonthArchive()">
-                            <!-- مانگەکان بە داینامیکی لێرە دادەنرێن -->
-                        </select>
+                        <select id="archive-month-select" onchange="loadSelectedMonthArchive()"></select>
                     </div>
                     <div id="archive-result-box" class="archive-result"></div>
                 </div>
@@ -129,19 +105,25 @@
     <div class="app-container">
         
         <header class="top-bar">
+            <!-- دەستەچەپ: کات و بەروار بە جوانکاریی مۆدێرن -->
             <div class="bar-left">
-                <button type="button" class="btn-tool lock-btn" onclick="lockApp()">🔒 قوفڵ</button>
-                <button type="button" class="btn-tool" onclick="changePasscodePrompt()">🔑 پاسۆرد</button>
-                <button type="button" class="btn-tool reset-day-btn" onclick="clearTodayBookings()">🗑️ بەتاڵکردنی ڕۆژەکە</button>
+                <div class="time-widget">
+                    <span id="live-time" class="live-time">12:00:00 PM</span>
+                    <span id="live-date" class="live-date">...</span>
+                </div>
             </div>
             
+            <!-- ناوەڕاست: ناوی سەرتاشخانە (یان ناوی خاوەنکار) -->
             <div class="bar-center">
-                <span id="live-time" class="live-time">12:00:00 PM</span>
-                <span id="live-date" class="live-date">...</span>
+                <h1 id="shop-title" class="shop-title" onclick="changeShopNamePrompt()" title="کلیک بکە بۆ گۆڕینی ناو">سەرتاشخانەی شاهانە 💈</h1>
             </div>
 
+            <!-- دەستەڕاست: دوگمەکانی بەڕێوەبردن -->
             <div class="bar-right">
-                <button type="button" class="btn-finance" onclick="openFinanceModal()">💰 داهات، خەرجی و ئەرشیف</button>
+                <button type="button" class="btn-tool lock-btn" onclick="lockApp()">🔒 قوفڵ</button>
+                <button type="button" class="btn-tool" onclick="changePasscodePrompt()">🔑 پاسۆرد</button>
+                <button type="button" class="btn-finance" onclick="openFinanceModal()">💰 داهات و ئەرشیف</button>
+                <button type="button" class="btn-tool reset-day-btn" onclick="clearTodayBookings()">🗑️ بەتاڵکردنی ڕۆژ</button>
             </div>
         </header>
 
