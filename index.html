@@ -7,6 +7,24 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>نۆرەی سەرتاشخانە</title>
     <link rel="stylesheet" href="style.css">
+    <!-- بەستنەوەی مەنیفێست -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#080e1a">
+
+<!-- تاگە تایبەتەکانی Apple Safari بۆ iPad -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="سەرتاشخانە">
+<link rel="apple-touch-icon" href="https://cdn-icons-png.flxml.com/512/2933/2933921.png">
+
+<script>
+  // بەگەڕخستنی سیستەمی ئۆفلاین
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log('ئۆفلاین ئامادەیە!'))
+      .catch((err) => console.log('هەڵە لە ئۆفلاین:', err));
+  }
+</script>
 </head>
 <body>
 
