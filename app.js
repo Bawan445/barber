@@ -18,7 +18,7 @@ var bookings = JSON.parse(localStorage.getItem("barber_direct_slots")) || {};
 var financeRecords = JSON.parse(localStorage.getItem("barber_finance")) || [];
 var bookingHistoryLog = JSON.parse(localStorage.getItem("barber_booking_log")) || [];
 var lastActiveDate = localStorage.getItem("barber_last_date") || "";
-var shopName = localStorage.getItem("barber_shop_name") || "سەرتاشخانەی شاهانە 💈";
+var shopName = localStorage.getItem("barber_shop_name") || "کارەی دەلاک 💈";
 
 var currentPasscode = localStorage.getItem("barber_pin") || "1234";
 var enteredPin = "";
