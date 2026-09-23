@@ -18,22 +18,41 @@ var bookings = JSON.parse(localStorage.getItem("barber_direct_slots")) || {};
 var financeRecords = JSON.parse(localStorage.getItem("barber_finance")) || [];
 var bookingHistoryLog = JSON.parse(localStorage.getItem("barber_booking_log")) || [];
 var lastActiveDate = localStorage.getItem("barber_last_date") || "";
+var shopName = localStorage.getItem("barber_shop_name") || "سەرتاشخانەی شاهانە 💈";
 
 var currentPasscode = localStorage.getItem("barber_pin") || "1234";
 var enteredPin = "";
 
 window.onload = function() {
-    checkMidnightAutoReset(); // پشکنینی ئۆتۆماتیکی بۆ گۆڕانی ڕۆژ دوای کاتژمێر ١٢ی شەو
+    checkMidnightAutoReset();
     startClock();
+    loadShopName();
     renderSchedule();
     renderFinance();
     populateArchiveMonths();
     setInterval(updateSlotColorsOnly, 30000);
-    setInterval(checkMidnightAutoReset, 60000); // هەموو خولەکێک دەپشکنێت
+    setInterval(checkMidnightAutoReset, 60000);
 };
 
 // ==========================================
-// ١. لۆژیکی بەتاڵبوونەوەی ئۆتۆماتیکی دوای ١٢ی شەو
+// ناوی سەرتاشخانە (دەستکاری و پاشەکەوتکردن)
+// ==========================================
+function loadShopName() {
+    var titleElem = document.getElementById("shop-title");
+    if (titleElem) titleElem.innerText = shopName;
+}
+
+window.changeShopNamePrompt = function() {
+    var newName = prompt("تکایە ناوی نوێی سەرتاشخانەکە داخڵ بکە:", shopName);
+    if (newName && newName.trim() !== "") {
+        shopName = newName.trim();
+        localStorage.setItem("barber_shop_name", shopName);
+        loadShopName();
+    }
+};
+
+// ==========================================
+// بەتاڵبوونەوەی ئۆتۆماتیکی دوای ١٢ی شەو
 // ==========================================
 function checkMidnightAutoReset() {
     var todayStr = new Date().toISOString().split("T")[0];
@@ -44,16 +63,11 @@ function checkMidnightAutoReset() {
         return;
     }
 
-    // ئەگەر بەروارەکە ڕۆشتە سەر ڕۆژێکی تر (واتە ١٢ی شەو تێپەڕی)
     if (lastActiveDate !== todayStr) {
-        // تەواوی خانەکانی شاشە بەتاڵ دەبنەوە بۆ ڕۆژە نوێکە
         bookings = {};
         localStorage.removeItem("barber_direct_slots");
-
-        // بەرواری نوێ تۆمار دەکرێت
         lastActiveDate = todayStr;
         localStorage.setItem("barber_last_date", todayStr);
-
         renderSchedule();
     }
 }
@@ -155,7 +169,7 @@ function updateSlotColorsOnly() {
     }
 }
 
-// تۆمارکردنی نۆرە
+// تۆمارکردن
 window.saveSlot = function(index) {
     var time = timeSlotsTemplate[index];
     var workIn = document.getElementById("work-in-" + index);
@@ -175,7 +189,6 @@ window.saveSlot = function(index) {
     };
     localStorage.setItem("barber_direct_slots", JSON.stringify(bookings));
 
-    // پاشەکەوتکردنی هەمیشەیی لە لۆگی مێژوودا بۆ ئەرشیفی مانگانە
     bookingHistoryLog.push({
         time: time,
         work: workVal,
@@ -206,7 +219,7 @@ window.clearTodayBookings = function() {
 };
 
 // ==========================================
-// ٢. ئەرشیفی مانگانە و ژمێریاری
+// ئەرشیفی مانگانە و ژمێریاری
 // ==========================================
 window.openFinanceModal = function() {
     renderFinance();
@@ -283,14 +296,13 @@ window.addFinanceRecord = function() {
     renderFinance();
 };
 
-// کۆکردنەوەی ناوی هەموو ئەو مانگانەی داتایان تێدایە بۆ ناو سەلێکت
 function populateArchiveMonths() {
     var select = document.getElementById("archive-month-select");
     if (!select) return;
 
     var monthsSet = {};
     bookingHistoryLog.forEach(function(item) {
-        var key = item.timestamp.substring(0, 7); // YYYY-MM
+        var key = item.timestamp.substring(0, 7);
         monthsSet[key] = true;
     });
 
@@ -308,7 +320,6 @@ function populateArchiveMonths() {
     });
 }
 
-// کاتێک مانگێک لە ئەرشیف هەڵدەبژێردرێت، ئامارەکەی دەردەهێنێت
 window.loadSelectedMonthArchive = function() {
     var mKey = document.getElementById("archive-month-select").value;
     var resultBox = document.getElementById("archive-result-box");
@@ -344,7 +355,6 @@ window.loadSelectedMonthArchive = function() {
         '</div>';
 };
 
-// دابەزاندنی نوسخەی پاشەکەوت (Backup)
 window.exportDataToFile = function() {
     var backupObj = {
         bookingLog: bookingHistoryLog,
@@ -361,7 +371,7 @@ window.exportDataToFile = function() {
 };
 
 // ==========================================
-// ٣. پاسۆرد و قوفڵ (PIN)
+// پاسۆرد و قوفڵ (PIN)
 // ==========================================
 window.pressKey = function(num) {
     if (enteredPin.length < 4) {
