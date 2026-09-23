@@ -1,0 +1,396 @@
+:root {
+    --bg-dark: #080e1a;
+    --card-bg: #111c30;
+    --border-color: #1e3152;
+    --primary: #00d2ff;
+    --text-white: #f8fafc;
+    --text-gray: #94a3b8;
+    --success: #10b981;
+    --danger: #ef4444;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    min-height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+}
+
+.top-bar {
+    min-height: 75px;
+    background-color: var(--card-bg);
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.bar-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.live-time {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--primary);
+    letter-spacing: 1px;
+}
+
+.live-date {
+    font-size: 12px;
+    color: var(--text-gray);
+    font-weight: 600;
+}
+
+.bar-left, .bar-right {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-tool {
+    background-color: #1a2a47;
+    border: 1px solid var(--border-color);
+    color: var(--text-white);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.lock-btn { background-color: #1e3a5f; color: #38bdf8; }
+.reset-day-btn { background-color: #451a24; color: #f87171; border-color: #7f1d1d; }
+
+.btn-finance {
+    background: linear-gradient(135deg, #059669, #10b981);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.schedule-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px 16px;
+}
+
+.schedule-table-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+@media (max-width: 800px) {
+    .schedule-table-grid {
+        grid-template-columns: 1fr;
+    }
+    .top-bar {
+        justify-content: center;
+    }
+}
+
+.time-slot-row {
+    background-color: var(--card-bg);
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    gap: 8px;
+    transition: 0.2s ease;
+}
+
+.time-slot-row.status-active {
+    border-color: #10b981 !important;
+    background-color: rgba(16, 185, 129, 0.15) !important;
+}
+
+.time-slot-row.status-expired {
+    border-color: #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.18) !important;
+}
+
+.slot-time-badge {
+    min-width: 85px;
+    background: #080f1e;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 4px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--primary);
+}
+
+.slot-inputs {
+    flex: 1;
+    display: flex;
+    gap: 6px;
+}
+
+.input-work {
+    flex: 1.2;
+    background-color: #081120;
+    border: 1px solid var(--border-color);
+    color: #f8fafc;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+}
+
+.input-phone {
+    flex: 1;
+    background-color: #081120;
+    border: 1px solid var(--border-color);
+    color: #34d399;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 13px;
+    direction: ltr;
+    text-align: right;
+    outline: none;
+}
+
+.input-work:read-only, .input-phone:read-only {
+    background-color: rgba(6, 13, 26, 0.6);
+    border-color: transparent;
+    cursor: default;
+    user-select: none;
+}
+
+.slot-btns {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-save-slot {
+    background-color: var(--success);
+    color: white;
+    border: none;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-clear-slot {
+    background-color: #dc2626;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* بەشی ئەرشیف و مۆدێل */
+.booking-stats-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.b-stat-box {
+    background: #09152a;
+    border: 1.5px solid var(--primary);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+.b-stat-box span { font-size: 12px; color: var(--text-gray); font-weight: bold; }
+.b-stat-box h3 { font-size: 20px; color: var(--primary); margin-top: 4px; }
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 5000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.modal-overlay.active { display: flex !important; }
+
+.modal-card {
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    width: 100%;
+    max-width: 600px;
+    border-radius: 16px;
+    padding: 18px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.close-btn { background: none; border: none; color: #94a3b8; font-size: 22px; cursor: pointer; }
+
+.finance-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.fin-box {
+    background: #081120;
+    border: 1px solid var(--border-color);
+    padding: 10px 4px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.fin-box span { font-size: 11px; color: var(--text-gray); }
+.fin-box h4 { font-size: 15px; margin-top: 4px; }
+.fin-box.inc h4 { color: #34d399; }
+.fin-box.exp h4 { color: #f87171; }
+.fin-box.net h4 { color: #38bdf8; }
+
+.finance-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.finance-inputs input, select {
+    background-color: #081120;
+    border: 1px solid var(--border-color);
+    color: white;
+    padding: 8px 10px;
+    border-radius: 8px;
+    outline: none;
+}
+
+.finance-inputs input[type="text"] { flex: 2; min-width: 130px; }
+.finance-inputs input[type="number"] { flex: 1; min-width: 90px; }
+
+.btn-save {
+    background-color: var(--success);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* بەشی تایبەتی ئەرشیفی مانگەکان */
+.archive-section {
+    background: #091326;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 14px;
+}
+
+.archive-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.archive-header h4 { font-size: 13px; color: var(--primary); }
+
+.archive-result {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+/* پەردەی قوفڵ */
+.lock-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: #040812;
+    z-index: 99999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.lock-overlay.active { display: flex !important; }
+.pin-box { text-align: center; width: 300px; }
+.lock-icon { font-size: 38px; }
+.pin-box h2 { font-size: 17px; margin: 10px 0 16px 0; color: #cbd5e1; }
+
+.pin-dots {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.pin-dots .dot {
+    width: 15px; height: 15px;
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+.pin-dots .dot.filled { background-color: var(--primary) !important; }
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.keypad button {
+    background-color: #111e36;
+    border: 1.5px solid var(--border-color);
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    height: 55px;
+    border-radius: 12px;
+    cursor: pointer;
+    outline: none;
+}
+
+.keypad button:active { background-color: var(--primary) !important; color: #000 !important; }
+.keypad .clear-btn { color: #f87171; }
+.keypad .del-btn { color: #38bdf8; }
+.lock-error { color: #ef4444; font-weight: bold; margin-top: 12px; font-size: 13px; }

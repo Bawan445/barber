@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>نۆرەی سەرتاشخانە</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- پەردەی قوفڵ و پاسۆرد -->
+    <div id="lock-screen" class="lock-overlay active">
+        <div class="pin-box">
+            <span class="lock-icon">🔒</span>
+            <h2>تکایە پاسۆرد داخڵ بکە</h2>
+            <div class="pin-dots">
+                <span class="dot" id="dot-1"></span>
+                <span class="dot" id="dot-2"></span>
+                <span class="dot" id="dot-3"></span>
+                <span class="dot" id="dot-4"></span>
+            </div>
+            
+            <div class="keypad">
+                <button type="button" class="key-btn" onclick="pressKey('1')">1</button>
+                <button type="button" class="key-btn" onclick="pressKey('2')">2</button>
+                <button type="button" class="key-btn" onclick="pressKey('3')">3</button>
+                <button type="button" class="key-btn" onclick="pressKey('4')">4</button>
+                <button type="button" class="key-btn" onclick="pressKey('5')">5</button>
+                <button type="button" class="key-btn" onclick="pressKey('6')">6</button>
+                <button type="button" class="key-btn" onclick="pressKey('7')">7</button>
+                <button type="button" class="key-btn" onclick="pressKey('8')">8</button>
+                <button type="button" class="key-btn" onclick="pressKey('9')">9</button>
+                <button type="button" class="key-btn clear-btn" onclick="clearPin()">C</button>
+                <button type="button" class="key-btn" onclick="pressKey('0')">0</button>
+                <button type="button" class="key-btn del-btn" onclick="deleteKey()">⌫</button>
+            </div>
+            <p id="lock-error" class="lock-error"></p>
+        </div>
+    </div>
+
+    <!-- مۆدێلی داهات و خەرجی و ئەرشیفی مانگانە -->
+    <div id="finance-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>💰 ژمێریاری و ئەرشیفی مانگانە</h3>
+                <button type="button" class="close-btn" onclick="closeFinanceModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                
+                <!-- کارتەکانی ئاماری نۆرەگرتن -->
+                <div class="booking-stats-row">
+                    <div class="b-stat-box">
+                        <span>📅 نۆرەکانی ئەمڕۆ</span>
+                        <h3 id="stat-today-count">0</h3>
+                    </div>
+                    <div class="b-stat-box">
+                        <span>📊 نۆرەکانی ئەم مانگە</span>
+                        <h3 id="stat-month-count">0</h3>
+                    </div>
+                </div>
+
+                <!-- ژمێریاری مانگی ئێستا -->
+                <div class="finance-summary">
+                    <div class="fin-box inc">
+                        <span>داهاتی ئەم مانگە</span>
+                        <h4 id="display-total-income">0</h4>
+                    </div>
+                    <div class="fin-box exp">
+                        <span>خەرجی ئەم مانگە</span>
+                        <h4 id="display-total-expense">0</h4>
+                    </div>
+                    <div class="fin-box net">
+                        <span>قازانجی پاک</span>
+                        <h4 id="display-net-profit">0</h4>
+                    </div>
+                </div>
+
+                <!-- تۆمارکردنی خەرجی و داهات -->
+                <div class="finance-inputs">
+                    <input type="text" id="fin-note" placeholder="وردەکاری خەرجی یان داهات">
+                    <input type="number" id="fin-amount" placeholder="بڕی پارە">
+                    <select id="fin-type">
+                        <option value="income">داهات (+)</option>
+                        <option value="expense">خەرجی (-)</option>
+                    </select>
+                    <button type="button" class="btn-save" onclick="addFinanceRecord()">زیادکردن</button>
+                </div>
+
+                <!-- بەشی ئەرشیفی مانگەکانی پێشوو -->
+                <div class="archive-section">
+                    <div class="archive-header">
+                        <h4>📁 بینینی ئەرشیفی مانگەکانی تر:</h4>
+                        <select id="archive-month-select" onchange="loadSelectedMonthArchive()">
+                            <!-- مانگەکان بە داینامیکی لێرە دادەنرێن -->
+                        </select>
+                    </div>
+                    <div id="archive-result-box" class="archive-result"></div>
+                </div>
+
+                <div class="history-actions" style="margin-top: 10px;">
+                    <button type="button" class="btn-tool" onclick="exportDataToFile()">📥 دابەزاندنی نوسخەی باکئەپ (Excel/JSON)</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشەی سەرەکی -->
+    <div class="app-container">
+        
+        <header class="top-bar">
+            <div class="bar-left">
+                <button type="button" class="btn-tool lock-btn" onclick="lockApp()">🔒 قوفڵ</button>
+                <button type="button" class="btn-tool" onclick="changePasscodePrompt()">🔑 پاسۆرد</button>
+                <button type="button" class="btn-tool reset-day-btn" onclick="clearTodayBookings()">🗑️ بەتاڵکردنی ڕۆژەکە</button>
+            </div>
+            
+            <div class="bar-center">
+                <span id="live-time" class="live-time">12:00:00 PM</span>
+                <span id="live-date" class="live-date">...</span>
+            </div>
+
+            <div class="bar-right">
+                <button type="button" class="btn-finance" onclick="openFinanceModal()">💰 داهات، خەرجی و ئەرشیف</button>
+            </div>
+        </header>
+
+        <!-- خشتەی کاتژمێرەکان -->
+        <main class="schedule-container">
+            <div class="schedule-table-grid" id="slots-container"></div>
+        </main>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
